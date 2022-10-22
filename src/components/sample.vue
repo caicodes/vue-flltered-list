@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 const inputField = ref()
-
+let resultList = {}
 const dataObj = {
   a: 1,
   b: 3,
@@ -10,22 +10,34 @@ const dataObj = {
   e: 1,
 }
 
-const runFilter = () => {
-  console.log('runFilter called')
+function runFilter() {
+  resultList = {}
   for (const [key, value] of Object.entries(dataObj)) {
-    console.log(`${key}: ${value}`)
+    if (!inputField.value) {
+      resultList[key] = value
+    } else {
+      if (inputField.value == value) {
+        resultList[key] = value
+      }
+    }
   }
+  return resultList
 }
+
 const resultListFiltered = computed(() => {
-  return runFilter
+  runFilter()
+  return resultList
 })
+
+
 </script>
 
 <template>
   <div>
-    <input type="text" v-model="inputField" @input="runFilter">
+    <input type="text" id="inputField" v-model="inputField" @input="runFilter">
     <ul>
-      <li><span>a</span> is 1</li>
+      <li v-for="(value,key) in resultListFiltered" :key="key"
+        :class="{ red: (value < 2), blue: (value > 2), gray: (value == 2) }"><span>{{key}}</span> is {{value}}</li>
     </ul>
   </div>
 </template>
@@ -47,6 +59,22 @@ ul {
   li {
     text-align: start;
     padding: .5rem;
+
+    span {
+      text-transform: uppecase;
+    }
+
+    &.red {
+      color: palevioletred;
+    }
+
+    &.blue {
+      color: lightblue;
+    }
+
+    &.gray {
+      color: gray;
+    }
   }
 }
 </style>
