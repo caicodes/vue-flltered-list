@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+
 const inputField = ref()
 let resultList = {}
 const dataObj = {
@@ -35,10 +36,10 @@ const resultListFiltered = computed(() => {
 <template>
   <div>
     <input type="text" id="inputField" v-model="inputField" @input="runFilter">
-    <ul>
+    <TransitionGroup name="list" tag="ul">
       <li v-for="(value,key) in resultListFiltered" :key="key"
         :class="{ red: (value < 2), blue: (value > 2), gray: (value == 2) }"><span>{{key}}</span> is {{value}}</li>
-    </ul>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -76,5 +77,17 @@ ul {
       color: gray;
     }
   }
+}
+
+// transitions
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
