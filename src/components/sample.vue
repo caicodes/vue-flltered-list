@@ -89,5 +89,6 @@ ul {
 .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+  position: absolute;
 }
 </style>
